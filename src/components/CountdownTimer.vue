@@ -1,50 +1,64 @@
 <template>
   <div class="CountdownTimer">
     <h1>{{ msg }}</h1>
-    <h1>{{ remainingSeconds }}</h1>
+    <h1>{{ remainingMinutes }} : {{ remainingSeconds }}</h1>
   </div>
   <div v-if="!intervalID">
-    <input  v-model="timeout" placeholder="Timeout">
-    <button v-on:click="startTimer(timeout)">Start Timer</button>
+    <input v-model="timeoutInMinutes" placeholder="Timeout in minutes" />
+    <button class="controlButton" v-on:click="startTimer(timeoutInMinutes)">
+      Start Timer
+    </button>
   </div>
-  <button v-else v-on:click="stopTimer()">Stop Timer</button>
+  <button class="controlButton" v-else v-on:click="stopTimer()">
+    Stop Timer
+  </button>
 </template>
 
 <script>
 export default {
-  name: 'CountdownTimer',
+  name: "CountdownTimer",
   props: {
-    msg: String
-  },
-  mounted() {
+    msg: String,
   },
   data() {
     return {
-      timeout: null,
-      remainingSeconds: 0,
-      intervalID: null
-    }
+      intervalID: null,
+      timeoutInMinutes: null,
+      remainingMinutes: "00",
+
+      remainingSeconds: "00",
+    };
   },
   methods: {
     startTimer(durationInMinutes) {
-      this.remainingSeconds = durationInMinutes * 60
+      if (durationInMinutes && durationInMinutes != 0) {
+        this.remainingMinutes = durationInMinutes;
+        this.remainingSeconds = 0;
 
-      const that = this
-      this.intervalID = setInterval( function() {
-        if(that.remainingSeconds === 0) {
-          that.stopTimer()
-          return
-        }
-        that.remainingSeconds -= 1
-      }, 1000)
+        const that = this;
+        this.intervalID = setInterval(function () {
+          if (that.remainingMinutes === 0 && that.remainingSeconds === 0) {
+            that.stopTimer();
+            return;
+          }
+
+          if (that.remainingSeconds === 0) {
+            that.remainingMinutes -= 1;
+            that.remainingSeconds = 59;
+            return;
+          }
+          that.remainingSeconds -= 1;
+        }, 1000);
+      }
     },
     stopTimer() {
-      clearInterval(this.intervalID)
-      this.remainingSeconds = 0
-      this.intervalID = null
-    }
-  }
-}
+      clearInterval(this.intervalID);
+      this.remainingSeconds = 0;
+      this.remainingMinutes = 0;
+      this.intervalID = null;
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -62,5 +76,8 @@ li {
 }
 a {
   color: #42b983;
+}
+.controlButton {
+  margin: 40px 0 0;
 }
 </style>
