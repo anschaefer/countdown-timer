@@ -1,16 +1,16 @@
 <template>
-<CountdownTimer msg="Meeting starts in:"/>
+  <CountdownTimer msg="Meeting starts in:" />
 </template>
 
 <script>
-import CountdownTimer from './components/CountdownTimer.vue'
+import CountdownTimer from "./components/CountdownTimer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    CountdownTimer
-  }
-}
+    CountdownTimer,
+  },
+};
 </script>
 
 <style>

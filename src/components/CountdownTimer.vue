@@ -25,7 +25,6 @@ export default {
       intervalID: null,
       timeoutInMinutes: null,
       remainingMinutes: "00",
-
       remainingSeconds: "00",
     };
   },
