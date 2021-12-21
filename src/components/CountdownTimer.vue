@@ -1,7 +1,7 @@
 <template>
   <div class="CountdownTimer">
     <h1>{{ msg }}</h1>
-    <h1>{{ remainingMinutes }} : {{ remainingSeconds }}</h1>
+    <h1>{{ formatTime(remainingSeconds) }}</h1>
   </div>
   <div v-if="!intervalID">
     <input v-model="timeoutInMinutes" placeholder="Timeout in minutes" />
@@ -23,38 +23,37 @@ export default {
   data() {
     return {
       intervalID: null,
-      timeoutInMinutes: null,
-      remainingMinutes: "00",
-      remainingSeconds: "00",
+      timeout: null,
+      remainingSeconds: 0,
     };
   },
   methods: {
     startTimer(durationInMinutes) {
-      if (durationInMinutes && durationInMinutes != 0) {
-        this.remainingMinutes = durationInMinutes;
-        this.remainingSeconds = 0;
+      this.remainingSeconds = durationInMinutes * 60;
 
-        const that = this;
-        this.intervalID = setInterval(function () {
-          if (that.remainingMinutes === 0 && that.remainingSeconds === 0) {
-            that.stopTimer();
-            return;
-          }
-
-          if (that.remainingSeconds === 0) {
-            that.remainingMinutes -= 1;
-            that.remainingSeconds = 59;
-            return;
-          }
-          that.remainingSeconds -= 1;
-        }, 1000);
-      }
+      const that = this;
+      this.intervalID = setInterval(function () {
+        if (that.remainingSeconds === 0) {
+          that.stopTimer();
+          return;
+        }
+        that.remainingSeconds -= 1;
+      }, 1000);
     },
     stopTimer() {
       clearInterval(this.intervalID);
       this.remainingSeconds = 0;
-      this.remainingMinutes = 0;
       this.intervalID = null;
+    },
+    formatTime(time) {
+      const minutes = Math.floor(time / 60);
+      let seconds = time % 60;
+
+      if (seconds < 10) {
+        seconds = "0" + seconds;
+      }
+
+      return minutes + ":" + seconds;
     },
   },
 };
