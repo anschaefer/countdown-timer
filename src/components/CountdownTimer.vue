@@ -21,21 +21,29 @@
       Stop Timer
     </button>
   </div>
+  <button class="controlButton" @click="openFileInput">
+    Change Background Image
+  </button>
+  <input
+    id="file-input"
+    type="file"
+    accept="image/*"
+    @change="changeBackgroundImage($event)"
+  />
 </template>
 
 <script>
 export default {
-  name: 'CountdownTimer',
+  name: "CountdownTimer",
   props: {
     msg: String
   },
-  mounted() {
-  },
+  mounted() {},
   data() {
     return {
       intervalID: null,
-      timeout: null,
-      remainingSeconds: 0,
+      timeoutInMinutes: null,
+      remainingSeconds: 0
     };
   },
   methods: {
@@ -68,7 +76,21 @@ export default {
 
       return minutes + ":" + seconds;
     },
-  },
+    openFileInput() {
+      document.getElementById("file-input").click();
+    },
+    changeBackgroundImage(event) {
+      const file = event.target.files[0];
+      let reader = new FileReader();
+      reader.addEventListener("load", function () {
+        const url = reader.result;
+        document.documentElement.style.backgroundImage = "url(" + url + ")";
+      });
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }
+  }
 };
 </script>
 
@@ -134,5 +156,9 @@ a {
 
   /* Sort of an arbitrary number; adjust to your liking */
   font-size: 48px;
+}
+
+#file-input {
+  display: none;
 }
 </style>
