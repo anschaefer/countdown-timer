@@ -25,9 +25,11 @@
 
 <script>
 export default {
-  name: "CountdownTimer",
+  name: 'CountdownTimer',
   props: {
-    msg: String,
+    msg: String
+  },
+  mounted() {
   },
   data() {
     return {
