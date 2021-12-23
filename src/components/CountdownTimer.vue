@@ -137,6 +137,10 @@ a {
 .base-timer-path-elapsed {
   stroke-width: 7px;
   stroke: grey;
+  animation-name: circleAnimation;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 .base-timer-label {
@@ -161,4 +165,11 @@ a {
 #file-input {
   display: none;
 }
+
+@keyframes circleAnimation {
+  from {sroke: white;}
+  to {stroke: skyblue;}
+}
+
+
 </style>
